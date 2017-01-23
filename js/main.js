@@ -193,7 +193,9 @@ $(document).ready(function(){
 			});
 		},
 		checkMatch: function() {
-			if ($('.selected').length === 2) {
+			// I added variable limit to limit number of items that can be selected at once
+			var limit = 2;
+			if ($('.selected').length >= limit) {
 				if ($('.selected').first().data('cardValue') == $('.selected').last().data('cardValue')) {
 					$('.selected').delay(700).each(function() {
             			$(this).animate(
