@@ -13,7 +13,7 @@ body {
 }
 .flip-container {
     width: 70px;
-    height: 110px;
+    height: 100px;
     position: relative;
     -webkit-perspective: 1000px;
     -moz-perspective: 1000px;
@@ -40,7 +40,7 @@ body {
 @media (max-width: 300px) {
         .flip-container {
         width: 70px;
-        height: 110px;
+        height: 100px;
         position: relative;
         -webkit-perspective: 1000px;
         -moz-perspective: 1000px;
@@ -102,6 +102,11 @@ body {
 	cursor: pointer;
 	border: 3px solid blue;
 }
+input {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 0.5em;
+}
 img {
     width: 65px;
     position: fixed;
@@ -109,4 +114,47 @@ img {
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
+}
+.list-button {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 0.3em;
+}
+.leaderLi li {
+    display: inline-block;
+}
+.modal li {
+    list-style: none;
+}
+.spanOne {
+    background-color: #BDBDBD;
+    height: 0.5em;
+    border-radius: 5%;
+}
+.spanTwo {
+    background-color: #BDBDBD;
+    height: 0.5em;
+    border-radius: 5%;
+}
+#timer {
+    color: #000;
+}
+#attempts {
+    color: #000;
+}
+.btn {
+    padding: 3px 12px;
+}
+/*Below we made placehoder > text-center*/
+::-webkit-input-placeholder {
+   text-align: center;
+}
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+:-ms-input-placeholder {  
+   text-align: center; 
 }

@@ -22,24 +22,52 @@
   <body>
 
     <div class="container text-center">
-        <h1>Test Your Memory!</h1>
-
+        <h3>Test Your Memory!</h3>
+        <input id="newName" type="text" placeholder="Enter Your Name">
+        
+        <button type="button" id="leaderboard" class="btn btn-info list-button">Leaderboard</button>
+        
+        <div>
+            <span class="spanOne">Timer: <span id="timer"> 0:00</span></span>
+            <span class="spanTwo">Number of attemps:<span id="attempts"> 0</span></span> 
+        </div>
         <button class="btn btn-danger" id="start-easy">Easy(4x4)</button>
         <button class="btn btn-danger" id="start-medium">Medium(6x6)</button>
         <button class="btn btn-danger" id="start-hard">Hard(8x8)</button>
+        
 
         <hr>
 
         <div id="cards"></div>
+        <div class="modal fade" id="done" role="dialog" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h2>You won Congratulations</h2>
+                        <ul>
+                            <li id="myData1"></li>
+                            <li id="myData2"></li>
+                            <li id="myData3"></li>
+                            <li id="myData4"></li>
+                        </ul>
+                        <div id="divForLi">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- This is how I should link JQ and my local bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
 
     <script src="js/main.js"></script>
 

@@ -11,6 +11,8 @@ $(document).ready(function(){
 		cards: [
 			
 		],
+		startTime:0,
+		attempts: 0,
 		init: function(data){ 
 			easyArray=[
 				'http://pngimg.com/upload/small/lion_PNG573.png',
@@ -145,6 +147,7 @@ $(document).ready(function(){
 	                this.cards = hardArray.slice(0);
 	                break;
 	        }
+	        this.type = data.type; // We use this to call our difficulty levels
 
 			// Below I created my HTML
 			var $cards = $("#cards");
@@ -161,7 +164,24 @@ $(document).ready(function(){
 			$('.card').append("<div class='front'>");
 			$('.card').append("<div class='back'>");
 
+			this.startTime = new Date();
+			this.setAttempts(0);
+			this.startTimer();
+
 			app.shuffle();
+		},
+		startTimer: function() {
+			var self = this; // We created self to call this from out object if we used "this" in this.interval it wouldn't work
+			var $timer = $('#timer'); // We created variable to not call it each time, so this is more efficient
+			clearInterval(this.interval); // We are using this to reset this.interval, to not create many timers
+			this.interval = setInterval(function(){
+				var timePassed = ((new Date() - self.startTime) / 1000).toFixed(2);
+				$timer.text(timePassed);
+			}, 100);
+		},
+		setAttempts: function(attempts) {
+			this.attempts = attempts; // We just call our variable attempts
+			$('#attempts').text(attempts);
 		},
 		shuffle: function(){
 			// We are making random cards come up with this function
@@ -216,18 +236,53 @@ $(document).ready(function(){
 							$(this).toggleClass('flipped').removeClass('selected');
 						});
 					}, 735);
+					this.setAttempts(this.attempts + 1); // We use this to get to our variable
 				}
 			}
 		},
 		checkWin: function() {
 			if ($('.unmatched').length === 0) {
-				$('.containerWin').html('<h1>You Won</h1>');
+				clearInterval(this.interval);
+
+				// These are variables that go into leaderboard
+				var difficulty = this.type;
+				var name = $("#newName").val();
+				var time = $("#timer").text();
+				var attempts = $("#attempts").text();
+
+				// I created myCurrentList for modal result
+				var myCurrentList = {
+					difficulty: difficulty,
+					name: name,
+					time: time,
+					attempts: attempts
+				};
+				var leaderboard = localStorage.getItem("leaderboard");
+				if (leaderboard) {
+					leaderboard = JSON.parse(leaderboard);
+				} else  {
+					leaderboard = [];
+				}
+
+				// I push myCurrentList to leaderboard to create it
+				leaderboard.push(myCurrentList);
+
+				localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+				$("#done").modal(); // When game is finished we activate our modal
+
+				// We add player data here to modal
+				var $modalLi = $('<ul id="modalLi">');
+				$('#divForLi').append($modalLi);
+				$modalLi.append('<li>' + "Name:" + myCurrentList.name + "&nbsp;&nbsp;&nbsp;" + '</li>');
+				$modalLi.append('<li>' + "&nbsp;&nbsp;&nbsp;" + "Difficulty:" + myCurrentList.difficulty + '</li>');
+				$modalLi.append('<li>' + "&nbsp;&nbsp;&nbsp;" + "Time:" + myCurrentList.time + '</li>');
+				$modalLi.append('<li>' + "&nbsp;&nbsp;&nbsp;" + "Attempts:" + myCurrentList.attempts + '</li>');
+				$modalLi.append('<div>');
 			}
 		}
 	};
-	// $('#start-easy').on('click', function() {
-	// 	app.init();
-	// });
+
 	$('#start-easy').click({type:easy}, function(event){
   		app.init(event.data);
 	});
@@ -238,6 +293,27 @@ $(document).ready(function(){
   		app.init(event.data);
 	});
 	
+	$('#leaderboard').on('click', function(){
+		var leaderboard = localStorage.getItem("leaderboard");
+		if (leaderboard) {
+			leaderboard = JSON.parse(leaderboard);
+		} else  {
+			leaderboard = [];
+		}
+		var $container=$('<div class="container text-center">');
+		var $ul = $('<ul class="leaderLi">');
+		$container.append($ul);
+
+		// We created forEach function to use elements from our leaderboard object
+		leaderboard.forEach(function(entry) {
+			$ul.append('<li>' + "Name:" + entry.name + "&nbsp;&nbsp;&nbsp;" + '</li>');
+			$ul.append('<li>' + "&nbsp;&nbsp;&nbsp;" + "Difficulty:" + entry.difficulty + '</li>');
+			$ul.append('<li>' + "&nbsp;&nbsp;&nbsp;" + "Time:" + entry.time + '</li>');
+			$ul.append('<li>' + "&nbsp;&nbsp;&nbsp;" + "Attempts:" + entry.attempts + '</li>');
+			$ul.append('<div>');
+		});
+		$("#cards").html($ul);
+	});
 
 
 });
